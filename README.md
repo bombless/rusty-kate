@@ -18,5 +18,7 @@ Here's the list:
 - https://github.com/PistonDevelopers/sdl2_window
 - https://github.com/AngryLawyer/rust-sdl2
 
+See [wiki](https://github.com/bombless/rusty-kate/wiki) for details and examples.
+
 ## Welcome
 The project's distributed under MIT license. Feel free to open issues or make pull requests.
