@@ -113,7 +113,9 @@
 				<IncludeRules context="comment" />
 				<DetectChar attribute="Signature" context="#stay" char="," />
 				<DetectChar attribute="Signature" context="#pop" char=")" />
-				<StringDetect attribute="Keyword" context="#stay" char="mut" />
+				<StringDetect attribute="Keyword" context="#stay" String="mut" />
+				<DetectChar attribute="Reference" context="#stay" char="&amp;" />
+				<StringDetect attribute="Keyword" context="#stay" String="self" />
 				<DetectIdentifier attribute="Variable" context="argument-type-start" />
 			</context>
 			<context attribute="Nothing" lineEndContext="#stay" name="argument-type-start">
