@@ -8,9 +8,104 @@
 			<context attribute="Nothing" lineEndContext="#stay" name="outside">
 				<DetectSpaces attribute="Spaces" context="#stay" />
 				<Detect2Chars attribute="Comment" context="single-line-comment" char="/" char1="/" lookAhead="true" />
+				<Detect2Chars attribute="Comment" context="inside-multi-line-comment" char="/" char1="*" />
 				<StringDetect attribute="Keyword" context="extern" String="extern" />
-				<StringDetect attribute="Keyword" context="global-public-modifier" String="pub" />
+				<StringDetect attribute="Keyword" context="#stay" String="pub" />
 				<StringDetect attribute="Keyword" context="trait-name" String="trait" />
+				<StringDetect attribute="Keyword" context="function-signature-start" String="fn" />
+			</context>
+			<context attribute="Nothing" lineEndContext="#stay" name="function-signature-start">
+				<DetectSpaces attribute="Spaces" context="#stay" />
+				<Detect2Chars attribute="Comment" context="single-line-comment" char="/" char1="/" lookAhead="true" />
+				<Detect2Chars attribute="Comment" context="inside-multi-line-comment" char="/" char1="*" />
+				<DetectIdentifier attribute="Function" context="function-start" />
+			</context>
+			<context attribute="Nothing" lineEndContext="#stay" name="function-start">
+				<DetectSpaces attribute="Spaces" context="#stay" />
+				<Detect2Chars attribute="Comment" context="single-line-comment" char="/" char1="/" lookAhead="true" />
+				<Detect2Chars attribute="Comment" context="inside-multi-line-comment" char="/" char1="*" />
+				<!-- pop(function-start) pop(function-signature-start) -->
+				<DetectChar attribute="Signature" context="#pop#pop" char=";" />
+				<StringDetect attribute="Signature" context="return_type" String="->" />
+				<DetectChar attribute="Signature" context="function-generics-parameters" char="&lt;" />
+				<DetectChar attribute="Signature" context="arguments" char="(" />
+			</context>
+			<context attribute="Nothing" lineEndContext="#stay" name="return_type">
+				<IncludeRules context="type" />
+				<DetectChar attribute="Signature" context="#pop" char=";" lookAhead="true" />
+			</context>
+			<context attribute="Nothing" lineEndContext="#stay" name="type">
+				<DetectSpaces attribute="Spaces" context="#stay" />
+				<Detect2Chars attribute="Comment" context="single-line-comment" char="/" char1="/" lookAhead="true" />
+				<Detect2Chars attribute="Comment" context="inside-multi-line-comment" char="/" char1="*" />
+				<RegExpr attribute="Namespace" context="#stay"
+					String="(::\s*)?\w+\s*::(\s*\w+\s*::)+|(::\s*)?(\w+\s*::)+" />
+				<DetectIdentifier attribute="Type" context="#stay" />
+				<StringDetect attribute="Keyword" context="#stay" String="mut" />
+				<DetectChar attribute="Reference" context="#stay" char="&amp;" />
+				<DetectChar attribute="Type" context="type-as-generics-parameter" char="&lt;" />
+			</context>
+			<context attribute="Nothing" lineEndContext="#stay" name="type-as-generics-parameter">
+				<IncludeRules context="type" />
+				<DetectChar attribute="Signature" context="#stay" char="," />
+				<DetectChar attribute="Type" context="#pop" char="&gt;" />
+			</context>
+			<context attribute="Nothing" lineEndContext="#stay" name="function-generics-parameters">
+				<DetectSpaces attribute="Spaces" context="#stay" />
+				<Detect2Chars attribute="Comment" context="single-line-comment" char="/" char1="/" lookAhead="true" />
+				<Detect2Chars attribute="Comment" context="inside-multi-line-comment" char="/" char1="*" />
+				<DetectChar attribute="Signature" context="#pop" char="&gt;" />
+				<DetectChar attribute="Signature" context="#stay" char="," />
+				<DetectIdentifier attribute="Type" context="bound-start" />
+			</context>
+			<context attribute="Nothing" lineEndContext="#stay" name="bound-start">
+				<DetectSpaces attribute="Spaces" context="#stay" />
+				<Detect2Chars attribute="Comment" context="single-line-comment" char="/" char1="/" lookAhead="true" />
+				<Detect2Chars attribute="Comment" context="inside-multi-line-comment" char="/" char1="*" />
+				<DetectChar attribute="Signature" context="#pop" char="," />
+				<!-- pop(bound-start) pop(function-generics-parameters) -->
+				<DetectChar attribute="Signature" context="#pop#pop" char="&gt;" />
+				<DetectChar attribute="Signature" context="bound" char=":" />
+			</context>
+			<context attribute="Nothing" lineEndContext="#stay" name="bound">
+				<DetectSpaces attribute="Spaces" context="#stay" />
+				<Detect2Chars attribute="Comment" context="single-line-comment" char="/" char1="/" lookAhead="true" />
+				<Detect2Chars attribute="Comment" context="inside-multi-line-comment" char="/" char1="*" />
+				<RegExpr attribute="Namespace" context="#stay"
+					String="(::\s*)?\w+\s*::(\s*\w+\s*::)+|(::\s*)?(\w+\s*::)+" />
+				<DetectIdentifier attribute="Type" context="#stay" />
+				<RegExpr attribute="Lifetime" context="#stay" String="'[_a-z]+" />
+				<DetectChar attribute="Signature" context="#stay" char="+" />
+				<DetectChar attribute="Signature" context="#pop" char="," />
+				<!-- pop(bound) pop(bound-start) -->
+				<DetectChar attribute="Signature" context="#pop#pop" char="&gt;" lookAhead="true" />
+				<DetectChar attribute="Signature" context="bound-as-generics-parameter" char="&lt;" />
+			</context>
+			<context attribute="Nothing" lineEndContext="#stay" name="bound-as-generics-parameter">
+				<IncludeRules context="bound" />
+				<DetectChar attribute="Signature" context="#stay" char="," />
+			</context>
+			<context attribute="Nothing" lineEndContext="#stay" name="arguments">
+				<DetectSpaces attribute="Spaces" context="#stay" />
+				<Detect2Chars attribute="Comment" context="single-line-comment" char="/" char1="/" lookAhead="true" />
+				<Detect2Chars attribute="Comment" context="inside-multi-line-comment" char="/" char1="*" />
+				<DetectChar attribute="Signature" context="#stay" char="," />
+				<DetectChar attribute="Signature" context="#pop" char=")" />
+				<StringDetect attribute="Keyword" context="#stay" char="mut" />
+				<DetectIdentifier attribute="Variable" context="argument-type-start" />
+			</context>
+			<context attribute="Nothing" lineEndContext="#stay" name="argument-type-start">
+				<DetectSpaces attribute="Spaces" context="#stay" />
+				<Detect2Chars attribute="Comment" context="single-line-comment" char="/" char1="/" lookAhead="true" />
+				<Detect2Chars attribute="Comment" context="inside-multi-line-comment" char="/" char1="*" />
+				<DetectChar attribute="Signature" context="type-in-arguments" char=":" />
+			</context>
+			<context attribute="Nothing" lineEndContext="#stay" name="type-in-arguments">
+				<IncludeRules context="type" />
+				<!-- pop(type-in-arguments) pop(argument-type-start) -->
+				<DetectChar attribute="Signature" context="#pop#pop" char="," />
+				<!-- pop(type-in-arguments) pop(argument-type-start) -->
+				<DetectChar attribute="Signature" context="#pop#pop" char=")" lookAhead="true" />
 			</context>
 			<context attribute="Comment" lineEndContext="#pop" name="single-line-comment">
 				<RegExpr attribute="Doc" context="doc" String="^///" />
@@ -21,24 +116,22 @@
 				<Detect2Chars attribute="Comment" context="#pop" char="*" char1="/" />
 				<Detect2Chars attribute="Comment" context="inside-multi-line-comment" char="/" char1="*" />
 			</context>
-			<context attribute="Nothing" lineEndContext="#stay" name="global-public-modifier">
-				<DetectSpaces attribute="Spaces" context="#stay" />
-				<Detect2Chars attribute="Comment" context="single-line-comment" char="/" char1="/" lookAhead="true" />
-				<StringDetect attribute="Keyword" context="trait-name" String="trait" />
-			</context>
 			<context attribute="Nothing" lineEndContext="#stay" name="trait-name">
 				<DetectSpaces attribute="Spaces" context="#stay" />
 				<Detect2Chars attribute="Comment" context="single-line-comment" char="/" char1="/" lookAhead="true" />
+				<Detect2Chars attribute="Comment" context="inside-multi-line-comment" char="/" char1="*" />
 				<DetectIdentifier attribute="Type" context="trait-start" />
 			</context>
 			<context attribute="Nothing" lineEndContext="#stay" name="trait-start">
 				<DetectSpaces attribute="Spaces" context="#stay" />
 				<Detect2Chars attribute="Comment" context="single-line-comment" char="/" char1="/" lookAhead="true" />
+				<Detect2Chars attribute="Comment" context="inside-multi-line-comment" char="/" char1="*" />
 				<DetectChar attribute="Braces" context="between-trait-methods" char="{" />
 			</context>
 			<context attribute="Nothing" lineEndContext="#stay" name="between-trait-methods">
 				<DetectSpaces attribute="Spaces" context="#stay" />
 				<Detect2Chars attribute="Comment" context="single-line-comment" char="/" char1="/" lookAhead="true" />
+				<Detect2Chars attribute="Comment" context="inside-multi-line-comment" char="/" char1="*" />
 				<!-- pop(between-trait-methods) pop(trait-start) pop(trait-name)
 						pop(global-public-modifier) -->
 				<DetectChar attribute="Braces" context="outside" char="}" />
@@ -50,23 +143,27 @@
 			<context attribute="Nothing" lineEndContext="#stay" name="extern">
 				<DetectSpaces attribute="Spaces" context="#stay" />
 				<Detect2Chars attribute="Comment" context="single-line-comment" char="/" char1="/" lookAhead="true" />
+				<Detect2Chars attribute="Comment" context="inside-multi-line-comment" char="/" char1="*" />
 				<StringDetect attribute="String" context="extern_c-start" String="&quot;C&quot;" />
 				<StringDetect attribute="Keyword" context="introduce-crate" String="crate" />
 			</context>
 			<context attribute="Nothing" lineEndContext="#stay" name="extern_c-start">
 				<DetectSpaces attribute="Spaces" context="#stay" />
 				<Detect2Chars attribute="Comment" context="single-line-comment" char="/" char1="/" lookAhead="true" />
+				<Detect2Chars attribute="Comment" context="inside-multi-line-comment" char="/" char1="*" />
 				<DetectChar attribute="Braces" context="between-extern_c-decls" char="{" />
 			</context>
 			<context attribute="Nothing" lineEndContext="#stay" name="between-extern_c-decls">
 				<DetectSpaces attribute="Spaces" context="#stay" />
 				<Detect2Chars attribute="Comment" context="single-line-comment" char="/" char1="/" lookAhead="true" />
+				<Detect2Chars attribute="Comment" context="inside-multi-line-comment" char="/" char1="*" />
 				<!-- pop(between-extern_c-decls) pop(extern_c-start) pop(extern) -->
 				<DetectChar attribute="Braces" context="outside" char="}" />
 			</context>
 			<context attribute="Nothing" lineEndContext="#stay" name="introduce-crate">
 				<DetectSpaces attribute="Spaces" context="#stay" />
 				<Detect2Chars attribute="Comment" context="single-line-comment" char="/" char1="/" lookAhead="true" />
+				<Detect2Chars attribute="Comment" context="inside-multi-line-comment" char="/" char1="*" />
 				<DetectChar attribute="Quote" context="crate-name-quotation" char="&quot;" />
 				<DetectIdentifier attribute="Type" context="crate-name" lookAhead="true" />
 			</context>
@@ -77,14 +174,18 @@
 			<context attribute="Nothing" lineEndContext="#stay" name="crate-name-as">
 				<DetectSpaces attribute="Spaces" context="#stay" />
 				<Detect2Chars attribute="Comment" context="single-line-comment" char="/" char1="/" lookAhead="true" />
+				<Detect2Chars attribute="Comment" context="inside-multi-line-comment" char="/" char1="*" />
 				<StringDetect attribute="Keyword" context="crate-name" String="as" />
 			</context>
 			<context attribute="Nothing" lineEndContext="#stay" name="crate-name">
 				<DetectSpaces attribute="Spaces" context="#stay" />
 				<Detect2Chars attribute="Comment" context="single-line-comment" char="/" char1="/" lookAhead="true" />
+				<Detect2Chars attribute="Comment" context="inside-multi-line-comment" char="/" char1="*" />
 				<DetectIdentifier attribute="Type" context="end-crate-decl" />
 			</context>
 			<context attribute="Nothing" lineEndContext="#stay" name="end-crate-decl">
+				<Detect2Chars attribute="Comment" context="single-line-comment" char="/" char1="/" lookAhead="true" />
+				<Detect2Chars attribute="Comment" context="inside-multi-line-comment" char="/" char1="*" />
 				<DetectChar attribute="Semicolon" context="outside" char=";" />
 			</context>
 		</contexts>
