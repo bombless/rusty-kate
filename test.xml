@@ -7,24 +7,38 @@
 			<!-- and `name` provides an entry -->
 			<context attribute="Nothing" lineEndContext="#stay" name="outside">
 				<DetectSpaces attribute="Spaces" context="#stay" />
+				<Detect2Chars attribute="Comment" context="single-line-comment" char="/" char1="/" lookAhead="true" />
 				<StringDetect attribute="Keyword" context="extern" String="extern" />
 				<StringDetect attribute="Keyword" context="global-public-modifier" String="pub" />
 				<StringDetect attribute="Keyword" context="trait-name" String="trait" />
 			</context>
+			<context attribute="Comment" lineEndContext="#pop" name="single-line-comment">
+				<RegExpr attribute="Doc" context="doc" String="^///" />
+			</context>
+			<context attribute="Doc" lineEndContext="#pop#pop" name="doc">
+			</context>
+			<context attribute="Comment" lineEndContext="#stay" name="inside-multi-line-comment">
+				<Detect2Chars attribute="Comment" context="#pop" char="*" char1="/" />
+				<Detect2Chars attribute="Comment" context="inside-multi-line-comment" char="/" char1="*" />
+			</context>
 			<context attribute="Nothing" lineEndContext="#stay" name="global-public-modifier">
 				<DetectSpaces attribute="Spaces" context="#stay" />
+				<Detect2Chars attribute="Comment" context="single-line-comment" char="/" char1="/" lookAhead="true" />
 				<StringDetect attribute="Keyword" context="trait-name" String="trait" />
 			</context>
 			<context attribute="Nothing" lineEndContext="#stay" name="trait-name">
 				<DetectSpaces attribute="Spaces" context="#stay" />
+				<Detect2Chars attribute="Comment" context="single-line-comment" char="/" char1="/" lookAhead="true" />
 				<DetectIdentifier attribute="Type" context="trait-start" />
 			</context>
 			<context attribute="Nothing" lineEndContext="#stay" name="trait-start">
 				<DetectSpaces attribute="Spaces" context="#stay" />
+				<Detect2Chars attribute="Comment" context="single-line-comment" char="/" char1="/" lookAhead="true" />
 				<DetectChar attribute="Braces" context="between-trait-methods" char="{" />
 			</context>
 			<context attribute="Nothing" lineEndContext="#stay" name="between-trait-methods">
 				<DetectSpaces attribute="Spaces" context="#stay" />
+				<Detect2Chars attribute="Comment" context="single-line-comment" char="/" char1="/" lookAhead="true" />
 				<!-- pop(between-trait-methods) pop(trait-start) pop(trait-name)
 						pop(global-public-modifier) -->
 				<DetectChar attribute="Braces" context="outside" char="}" />
@@ -35,20 +49,24 @@
 			</context>
 			<context attribute="Nothing" lineEndContext="#stay" name="extern">
 				<DetectSpaces attribute="Spaces" context="#stay" />
+				<Detect2Chars attribute="Comment" context="single-line-comment" char="/" char1="/" lookAhead="true" />
 				<StringDetect attribute="String" context="extern_c-start" String="&quot;C&quot;" />
 				<StringDetect attribute="Keyword" context="introduce-crate" String="crate" />
 			</context>
 			<context attribute="Nothing" lineEndContext="#stay" name="extern_c-start">
 				<DetectSpaces attribute="Spaces" context="#stay" />
+				<Detect2Chars attribute="Comment" context="single-line-comment" char="/" char1="/" lookAhead="true" />
 				<DetectChar attribute="Braces" context="between-extern_c-decls" char="{" />
 			</context>
 			<context attribute="Nothing" lineEndContext="#stay" name="between-extern_c-decls">
 				<DetectSpaces attribute="Spaces" context="#stay" />
+				<Detect2Chars attribute="Comment" context="single-line-comment" char="/" char1="/" lookAhead="true" />
 				<!-- pop(between-extern_c-decls) pop(extern_c-start) pop(extern) -->
 				<DetectChar attribute="Braces" context="outside" char="}" />
 			</context>
 			<context attribute="Nothing" lineEndContext="#stay" name="introduce-crate">
 				<DetectSpaces attribute="Spaces" context="#stay" />
+				<Detect2Chars attribute="Comment" context="single-line-comment" char="/" char1="/" lookAhead="true" />
 				<DetectChar attribute="Quote" context="crate-name-quotation" char="&quot;" />
 				<DetectIdentifier attribute="Type" context="crate-name" lookAhead="true" />
 			</context>
@@ -58,10 +76,12 @@
 			</context>
 			<context attribute="Nothing" lineEndContext="#stay" name="crate-name-as">
 				<DetectSpaces attribute="Spaces" context="#stay" />
+				<Detect2Chars attribute="Comment" context="single-line-comment" char="/" char1="/" lookAhead="true" />
 				<StringDetect attribute="Keyword" context="crate-name" String="as" />
 			</context>
 			<context attribute="Nothing" lineEndContext="#stay" name="crate-name">
 				<DetectSpaces attribute="Spaces" context="#stay" />
+				<Detect2Chars attribute="Comment" context="single-line-comment" char="/" char1="/" lookAhead="true" />
 				<DetectIdentifier attribute="Type" context="end-crate-decl" />
 			</context>
 			<context attribute="Nothing" lineEndContext="#stay" name="end-crate-decl">
@@ -70,6 +90,8 @@
 		</contexts>
 		<itemDatas>
 			<itemData name="Outside" color="#000" defStyleNum="dsNormal" />
+			<itemData name="Comment" color="#999" defStyleNum="dsComment" />
+			<itemData name="Doc" color="#911" defStyleNum="dsComment" />
 			<itemData name="Spaces" color="#000" defStyleNum="dsNormal" />
 			<itemData name="Nothing" defStyleNum="dsError" />
 			<itemData name="Keyword" color="#33e" defStyleNum="dsKeyword" />
