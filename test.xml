@@ -15,7 +15,9 @@
 				<StringDetect attribute="Keyword" context="mod" String="mod" />
 				<!-- pop(outside) pop(mod-start) pop(mod) -->
 				<DetectChar attribute="Braces" context="#pop#pop#pop" char="}" />
+				<DetectChar attribute="Directive" context="directive" char="#" />
 			</context>
+			<context attribute="Directive" lineEndContext="#pop" name="directive" />
 			<content attribute="Nothing" lineEndContext="#stay" name="comment">
 				<RegExpr attribute="Comment" context="single-line-comment" String="//$|//[^/!]" />
 				<RegExpr attribute="Doc" context="single-line-doc" String="//[/!]" />
