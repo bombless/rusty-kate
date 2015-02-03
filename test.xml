@@ -165,7 +165,7 @@
 				<Detect2Chars attribute="Comment" context="single-line-comment" char="/" char1="/" lookAhead="true" />
 				<Detect2Chars attribute="Comment" context="inside-multi-line-comment" char="/" char1="*" />
 				<DetectChar attribute="Quote" context="crate-name-quotation" char="&quot;" />
-				<DetectIdentifier attribute="Type" context="end-crate-decl" />
+				<DetectIdentifier attribute="Namespace" context="end-crate-decl" />
 			</context>
 			<context attribute="String" lineEndContext="#stay" name="crate-name-quotation">
 				<Detect2Chars attribute="String" context="#stay" char="\" char1="&quot;" />
