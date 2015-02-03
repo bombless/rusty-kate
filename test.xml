@@ -118,6 +118,8 @@
 				<StringDetect attribute="Keyword" context="#stay" String="mut" />
 				<DetectChar attribute="Reference" context="#stay" char="&amp;" />
 				<StringDetect attribute="Keyword" context="#stay" String="self" />
+				<DetectChar attribute="Asterisk" context="#stay" char="*" />
+				<StringDetect attribute="Keyword" context="#stay" String="const" />
 				<DetectIdentifier attribute="Variable" context="argument-type-start" />
 			</context>
 			<context attribute="Nothing" lineEndContext="#stay" name="argument-type-start">
@@ -212,6 +214,7 @@
 			<itemData name="Variable" color="#422" defStyleNum="dsNormal" />
 			<itemData name="Generics" color="#362" bold="true" defStyleNum="dsNormal" />
 			<itemData name="Reference" color="#33e" bold="true" defStyleNum="dsNormal" />
+			<itemData name="Asterisk" color="#33e" bold="true" defStyleNum="dsNormal" />
 		</itemDatas>
 	</highlighting>
 </language>
