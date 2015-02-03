@@ -18,14 +18,14 @@
 				<DetectChar attribute="Directive" context="directive" char="#" />
 			</context>
 			<context attribute="Directive" lineEndContext="#pop" name="directive" />
-			<content attribute="Nothing" lineEndContext="#stay" name="comment">
+			<context attribute="Nothing" lineEndContext="#stay" name="comment">
 				<RegExpr attribute="Comment" context="single-line-comment" String="//$|//[^/!]" />
 				<RegExpr attribute="Doc" context="single-line-doc" String="//[/!]" />
 				<RegExpr attribute="Comment" context="multiline-comment" String="/\*$|/\*[^*]|/\*\*\*$|/\*\*\*[^/]" />
 				<RegExpr attribute="Doc" context="multiline-doc" String="/\*\*$|/\*\*[^*]" />
 				<StringDetect attribute="Comment" context="#stay" String="/**/" />
 				<StringDetect attribute="Doc" context="#stay" String="/***/" />
-			</content>
+			</context>
 			<context attribute="Comment" lineEndContext="#pop" name="single-line-comment" />
 			<context attribute="Doc" lineEndContext="#pop" name="single-line-doc" />
 			<context attribute="Comment" lineEndContext="#stay" name="multiline-comment">
