@@ -54,7 +54,7 @@
 				<!-- pop(function-start) pop(function-signature-start) -->
 				<DetectChar attribute="Signature" context="#pop#pop" char=";" />
 				<StringDetect attribute="Signature" context="return_type" String="->" />
-				<DetectChar attribute="Signature" context="function-generics-parameters" char="&lt;" />
+				<DetectChar attribute="Generics" context="function-generics-parameters" char="&lt;" />
 				<DetectChar attribute="Signature" context="arguments" char="(" />
 			</context>
 			<context attribute="Nothing" lineEndContext="#stay" name="return_type">
@@ -69,17 +69,17 @@
 				<DetectIdentifier attribute="Type" context="#stay" />
 				<StringDetect attribute="Keyword" context="#stay" String="mut" />
 				<DetectChar attribute="Reference" context="#stay" char="&amp;" />
-				<DetectChar attribute="Type" context="type-as-generics-parameter" char="&lt;" />
+				<DetectChar attribute="Generics" context="type-as-generics-parameter" char="&lt;" />
 			</context>
 			<context attribute="Nothing" lineEndContext="#stay" name="type-as-generics-parameter">
 				<IncludeRules context="type" />
 				<DetectChar attribute="Signature" context="#stay" char="," />
-				<DetectChar attribute="Type" context="#pop" char="&gt;" />
+				<DetectChar attribute="Generics" context="#pop" char="&gt;" />
 			</context>
 			<context attribute="Nothing" lineEndContext="#stay" name="function-generics-parameters">
 				<DetectSpaces attribute="Spaces" context="#stay" />
 				<IncludeRules context="comment" />
-				<DetectChar attribute="Signature" context="#pop" char="&gt;" />
+				<DetectChar attribute="Generics" context="#pop" char="&gt;" />
 				<DetectChar attribute="Signature" context="#stay" char="," />
 				<DetectIdentifier attribute="Type" context="bound-start" />
 			</context>
@@ -88,7 +88,7 @@
 				<IncludeRules context="comment" />
 				<DetectChar attribute="Signature" context="#pop" char="," />
 				<!-- pop(bound-start) pop(function-generics-parameters) -->
-				<DetectChar attribute="Signature" context="#pop#pop" char="&gt;" />
+				<DetectChar attribute="Generics" context="#pop#pop" char="&gt;" />
 				<DetectChar attribute="Signature" context="bound" char=":" />
 			</context>
 			<context attribute="Nothing" lineEndContext="#stay" name="bound">
@@ -101,8 +101,8 @@
 				<DetectChar attribute="Signature" context="#stay" char="+" />
 				<DetectChar attribute="Signature" context="#pop" char="," />
 				<!-- pop(bound) pop(bound-start) -->
-				<DetectChar attribute="Signature" context="#pop#pop" char="&gt;" lookAhead="true" />
-				<DetectChar attribute="Signature" context="bound-as-generics-parameter" char="&lt;" />
+				<DetectChar attribute="Generics" context="#pop#pop" char="&gt;" lookAhead="true" />
+				<DetectChar attribute="Generics" context="bound-as-generics-parameter" char="&lt;" />
 			</context>
 			<context attribute="Nothing" lineEndContext="#stay" name="bound-as-generics-parameter">
 				<IncludeRules context="bound" />
@@ -190,17 +190,22 @@
 			</context>
 		</contexts>
 		<itemDatas>
-			<itemData name="Outside" color="#000" defStyleNum="dsNormal" />
 			<itemData name="Comment" color="#999" defStyleNum="dsComment" />
 			<itemData name="Doc" color="#911" defStyleNum="dsComment" />
-			<itemData name="Spaces" color="#000" defStyleNum="dsNormal" />
-			<itemData name="Nothing" defStyleNum="dsError" />
+			<itemData name="Spaces" defStyleNum="dsNormal" />
+			<itemData name="Nothing" color="#f00" underline="true" defStyleNum="dsError" />
 			<itemData name="Keyword" color="#33e" defStyleNum="dsKeyword" />
 			<itemData name="Quote" color="#666" defStyleNum="dsString" />
 			<itemData name="String" color="#666" defStyleNum="dsString" />	
-			<itemData name="Brace" color="#000" defStyleNum="dsRegionMarker" />
-			<itemData name="Semicolon" color="#000" defStyleNum="dsNormal" />
-			<itemData name="Type" color="#282" defStyleNum="dsDataType" />
+			<itemData name="Braces" color="#772" defStyleNum="dsRegionMarker" />
+			<itemData name="Semicolon" color="#222" defStyleNum="dsNormal" />
+			<itemData name="Type" color="#282" bold="true" defStyleNum="dsDataType" />
+			<itemData name="Function" color="#153" defStyleNum="dsNormal" />
+			<itemData name="Namespace" color="#e59" defStyleNum="dsNormal" />
+			<itemData name="Signature" color="#256" defStyleNum="dsNormal" />
+			<itemData name="Variable" color="#422" defStyleNum="dsNormal" />
+			<itemData name="Generics" color="#362" bold="true" defStyleNum="dsNormal" />
+			<itemData name="Reference" color="#33e" bold="true" defStyleNum="dsNormal" />
 		</itemDatas>
 	</highlighting>
 </language>
