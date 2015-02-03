@@ -141,8 +141,8 @@
 			<context attribute="Nothing" lineEndContext="#stay" name="between-trait-methods">
 				<DetectSpaces attribute="Spaces" context="#stay" />
 				<IncludeRules context="comment" />
-				<!-- pop(between-trait-methods) pop(trait-start) pop(trait-name)
-						pop(global-public-modifier) -->
+				<StringDetect attribute="Keyword" context="#stay" String="pub" />
+				<StringDetect attribute="Keyword" context="function-signature-start" String="fn" />
 				<DetectChar attribute="Braces" context="outside" char="}" />
 			</context>
 			<context attribute="String" lineEndContext="#stay" name="string">
