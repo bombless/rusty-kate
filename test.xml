@@ -158,14 +158,14 @@
 				<Detect2Chars attribute="Comment" context="single-line-comment" char="/" char1="/" lookAhead="true" />
 				<Detect2Chars attribute="Comment" context="inside-multi-line-comment" char="/" char1="*" />
 				<!-- pop(between-extern_c-decls) pop(extern_c-start) pop(extern) -->
-				<DetectChar attribute="Braces" context="outside" char="}" />
+				<DetectChar attribute="Braces" context="#pop#pop#pop" char="}" />
 			</context>
 			<context attribute="Nothing" lineEndContext="#stay" name="introduce-crate">
 				<DetectSpaces attribute="Spaces" context="#stay" />
 				<Detect2Chars attribute="Comment" context="single-line-comment" char="/" char1="/" lookAhead="true" />
 				<Detect2Chars attribute="Comment" context="inside-multi-line-comment" char="/" char1="*" />
 				<DetectChar attribute="Quote" context="crate-name-quotation" char="&quot;" />
-				<DetectIdentifier attribute="Type" context="crate-name" lookAhead="true" />
+				<DetectIdentifier attribute="Type" context="end-crate-decl" />
 			</context>
 			<context attribute="String" lineEndContext="#stay" name="crate-name-quotation">
 				<Detect2Chars attribute="String" context="#stay" char="\" char1="&quot;" />
@@ -175,18 +175,15 @@
 				<DetectSpaces attribute="Spaces" context="#stay" />
 				<Detect2Chars attribute="Comment" context="single-line-comment" char="/" char1="/" lookAhead="true" />
 				<Detect2Chars attribute="Comment" context="inside-multi-line-comment" char="/" char1="*" />
-				<StringDetect attribute="Keyword" context="crate-name" String="as" />
+				<!-- pop(crate-name-as) pop(crate-name-quotation) -->
+				<StringDetect attribute="Keyword" context="#pop#pop" String="as" />
 			</context>
-			<context attribute="Nothing" lineEndContext="#stay" name="crate-name">
+			<context attribute="Nothing" lineEndContext="#stay" name="end-crate-decl">
 				<DetectSpaces attribute="Spaces" context="#stay" />
 				<Detect2Chars attribute="Comment" context="single-line-comment" char="/" char1="/" lookAhead="true" />
 				<Detect2Chars attribute="Comment" context="inside-multi-line-comment" char="/" char1="*" />
-				<DetectIdentifier attribute="Type" context="end-crate-decl" />
-			</context>
-			<context attribute="Nothing" lineEndContext="#stay" name="end-crate-decl">
-				<Detect2Chars attribute="Comment" context="single-line-comment" char="/" char1="/" lookAhead="true" />
-				<Detect2Chars attribute="Comment" context="inside-multi-line-comment" char="/" char1="*" />
-				<DetectChar attribute="Semicolon" context="outside" char=";" />
+				<!-- pop(end-crate-decl) pop(introduce-crate) pop(extern) -->
+				<DetectChar attribute="Semicolon" context="#pop#pop#pop" char=";" />
 			</context>
 		</contexts>
 		<itemDatas>
