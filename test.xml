@@ -68,9 +68,11 @@
 				<IncludeRules context="comment" />
 				<RegExpr attribute="Namespace" context="#stay"
 					String="(::\s*)?\w+\s*::(\s*\w+\s*::)+|(::\s*)?(\w+\s*::)+" />
+				<StringDetect attribute="Keyword" context="#stay" String="const" />
 				<DetectIdentifier attribute="Type" context="#stay" />
 				<StringDetect attribute="Keyword" context="#stay" String="mut" />
 				<DetectChar attribute="Reference" context="#stay" char="&amp;" />
+				<DetectChar attribute="Asterisk" context="#stay" char="*" />
 				<DetectChar attribute="Generics" context="type-as-generics-parameter" char="&lt;" />
 			</context>
 			<context attribute="Nothing" lineEndContext="#stay" name="type-as-generics-parameter">
@@ -118,8 +120,6 @@
 				<StringDetect attribute="Keyword" context="#stay" String="mut" />
 				<DetectChar attribute="Reference" context="#stay" char="&amp;" />
 				<StringDetect attribute="Keyword" context="#stay" String="self" />
-				<DetectChar attribute="Asterisk" context="#stay" char="*" />
-				<StringDetect attribute="Keyword" context="#stay" String="const" />
 				<DetectIdentifier attribute="Variable" context="argument-type-start" />
 			</context>
 			<context attribute="Nothing" lineEndContext="#stay" name="argument-type-start">
