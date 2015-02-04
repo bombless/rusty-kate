@@ -13,9 +13,43 @@
 				<StringDetect attribute="Keyword" context="trait-name" String="trait" />
 				<StringDetect attribute="Keyword" context="function-signature-start" String="fn" />
 				<StringDetect attribute="Keyword" context="mod" String="mod" />
+				<StringDetect attribute="Keyword" context="use-start" String="use" />
 				<!-- pop(outside) pop(mod-start) pop(mod) -->
 				<DetectChar attribute="Braces" context="#pop#pop#pop" char="}" />
 				<DetectChar attribute="Directive" context="directive" char="#" />
+			</context>
+			<context attribute="Nothing" lineEndContext="#stay" name="use-start">
+				<DetectSpaces attribute="Spaces" context="#stay" />
+				<IncludeRules context="comment" />
+				<StringDetect attribute="Keyword" context="#stay" String="super" />
+				<RegExpr attribute="Nothing" context="use" String="::|\w" lookAhead="true" />
+			</context>
+			<context attribute="Nothing" lineEndContext="#stay" name="use">
+				<DetectSpaces attribute="Spaces" context="#stay" />
+				<IncludeRules context="comment" />
+				<Detect2Chars attribute="Namespace" context="#stay" char=":" char1=":" />
+				<RegExpr attribute="Namespace" context="use-element"
+					String="(::\s*)?\w+\s*::|(::\s*)?\w+\s*::(\s*\w+\s*::)+" />
+				<RegExpr attribute="Nothing" context="use" String=".*[{;]" lookAhead="true" />
+			</context>
+			<context attribute="Nothing" lineEndContext="#stay" name="use-element">
+				<DetectSpaces attribute="Spaces" context="#stay" />
+				<IncludeRules context="comment" />
+				<DetectChar attribute="Braces" context="use-inside-braces" char="{" />
+				<!-- pop(use-element) pop(use) pop(use-start) -->
+				<DetectChar attribute="Semicolon" context="#pop#pop#pop" char=";" />
+				<RegExpr attribute="Namespace" context="#stay" String="[a-z][_a-z0-9]+" />
+				<RegExpr attribute="Type" context="#stay" String="[A-Z]\w*[a-z]\w*" />
+				<RegExpr attribute="Const" context="#stay" String="[A-Z][_A-Z0-9]+" />
+			</context>
+			<context attribute="Nothing" lineEndContext="#stay" name="use-inside-braces">
+				<DetectSpaces attribute="Spaces" context="#stay" />
+				<IncludeRules context="comment" />
+				<RegExpr attribute="Namespace" context="#stay" String="[a-z][_a-z0-9]+" />
+				<RegExpr attribute="Type" context="#stay" String="[A-Z]\w*[a-z]\w*" />
+				<RegExpr attribute="Const" context="#stay" String="[A-Z][_A-Z0-9]+" />
+				<DetectChar attribute="Comma" context="#stay" char="," />
+				<DetectChar attribute="Braces" context="#pop" char="}" />
 			</context>
 			<context attribute="Directive" lineEndContext="#pop" name="directive" />
 			<context attribute="Nothing" lineEndContext="#stay" name="comment">
