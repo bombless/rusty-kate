@@ -17,9 +17,20 @@
 				<StringDetect attribute="Keyword" context="const-start" String="const" />
 				<StringDetect attribute="Keyword" context="alias" String="type" />
 				<StringDetect attribute="Keyword" context="struct" String="struct" />
+				<StringDetect attribute="Keyword" context="enum" String="enum" />
 				<!-- pop(outside) pop(mod-start) pop(mod) -->
 				<DetectChar attribute="Braces" context="#pop#pop#pop" char="}" />
 				<DetectChar attribute="Directive" context="directive" char="#" />
+			</context>
+			<context attribute="Nothing" lineEndContext="#stay" name="enum">
+				<StringDetect attribute="Keyword" context="#stay" String="pub" />
+				<IncludeRules context="type" />
+				<IncludeRules context="literal" />
+				<DetectChar attribute="Colon" context="#stay" char=":" />
+				<DetectChar attribute="Braces" context="#stay" char="{" />
+				<DetectChar attribute="Braces" context="#pop" char="}" />
+				<DetectChar attribute="Equal" context="#stay" char="=" />
+				<DetectChar attribute="Comma" context="#stay" char="," />
 			</context>
 			<context attribute="Nothing" lineEndContext="#stay" name="struct">
 				<DetectSpaces attribute="Spaces" context="#stay" />
