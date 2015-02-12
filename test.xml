@@ -167,7 +167,7 @@
 				<IncludeRules context="comment" />
 				<!-- pop(function-start) pop(function-signature-start) -->
 				<DetectChar attribute="Signature" context="#pop#pop" char=";" />
-				<StringDetect attribute="Signature" context="return_type" String="->" />
+				<StringDetect attribute="Signature" context="return_type" String="-&gt;" />
 				<DetectChar attribute="Generics" context="generics-parameters" char="&lt;" />
 				<DetectChar attribute="Signature" context="arguments" char="(" />
 			</context>
@@ -175,12 +175,43 @@
 				<IncludeRules context="type" />
 				<DetectChar lookAhead="true" context="#pop" char=";" />
 			</context>
+			<context attribute="Nothing" lineEndContext="#stay" name="external-type">
+				<DetectSpaces attribute="Spaces" context="#stay" />
+				<IncludeRules context="comment" />
+				<StringDetect attribute="Keyword" context="external-fn" String="fn" />
+				<RegExpr attribute="String" context="#stay" String="&quot;[^&quot;]*&quot;" />
+			</context>
+			<context attribute="Nothing" lineEndContext="#stay" name="external-fn">
+				<DetectSpaces attribute="Spaces" context="#stay" />
+				<IncludeRules context="comment" />
+				<DetectChar attribute="Signature" context="#stay" char="(" />
+				<DetectIdentifier attribute="Type" context="external-fn-arg-type" />
+				<StringDetect attribute="Keyword" context="external-fn-ret" String="-&gt;" />
+				<!-- pop(external-fn) pop(external-type) -->
+				<DetectChar lookAhead="true" context="#pop#pop" char="&gt;" />
+				<!-- pop(external-fn) pop(external-type) -->
+				<DetectChar lookAhead="true" context="#pop#pop" char=";" />
+			</context>
+			<context attribute="Nothing" lineEndContext="#stay" name="external-fn-ret">
+				<IncludeRules context="type" />
+				<!-- pop(external-fn-ret) pop(external-fn) pop(external-type) -->
+				<DetectChar lookAhead="true" context="#pop#pop#pop" char="&gt;" />
+				<!-- pop(external-fn-ret) pop(external-fn) pop(external-type) -->
+				<DetectChar lookAhead="true" context="#pop#pop#pop" char=";" />
+			</context>
+			<context attribute="Nothing" lineEndContext="#stay" name="external-fn-arg-type">
+				<IncludeRules context="type" />
+				<DetectChar attribute="Signature" context="#stay" char=":" />
+				<DetectChar attribute="Signature" context="#pop" char="," />
+				<DetectChar attribute="Signature" context="#pop" char=")" />
+			</context>
 			<context attribute="Nothing" lineEndContext="#stay" name="type">
 				<DetectSpaces attribute="Spaces" context="#stay" />
 				<IncludeRules context="comment" />
 				<RegExpr attribute="Namespace" context="#stay"
 					String="(::\s*)?\w+\s*::(\s*\w+\s*::)*" />
 				<StringDetect attribute="Keyword" context="#stay" String="const" />
+				<StringDetect attribute="Keyword" context="external-type" String="extern" />
 				<DetectIdentifier attribute="Type" context="#stay" />
 				<StringDetect attribute="Keyword" context="#stay" String="mut" />
 				<DetectChar attribute="Reference" context="#stay" char="&amp;" />
