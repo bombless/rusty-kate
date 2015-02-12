@@ -40,8 +40,6 @@
 				<DetectChar attribute="Braces" context="#pop#pop" char="}" />
 			</context>
 			<context attribute="Nothing" lineEndContext="#stay" name="struct-field-type">
-				<DetectSpaces attribute="Spaces" context="#stay" />
-				<IncludeRules context="comment" />
 				<IncludeRules context="type" />
 				<!-- pop(struct-field-type) pop(struct-field) pop(struct) -->
 				<DetectChar attribute="Braces" context="#pop#pop#pop" char="}" />
