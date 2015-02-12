@@ -34,7 +34,7 @@
 				<DetectSpaces attribute="Spaces" context="#stay" />
 				<IncludeRules context="comment" />
 				<StringDetect attribute="Keyword" context="#stay" String="pub" />
-				<DetectIdentifier attribute="Normal" context="#stay" />
+				<DetectIdentifier attribute="Field" context="#stay" />
 				<DetectChar attribute="Colon" context="struct-field-type" char=":" />
 				<!-- pop(struct-field) pop(struct) -->
 				<DetectChar attribute="Braces" context="#pop#pop" char="}" />
@@ -322,6 +322,8 @@
 			<itemData name="Namespace" color="#e59" defStyleNum="dsNormal" />
 			<itemData name="Signature" color="#256" defStyleNum="dsNormal" />
 			<itemData name="Variable" color="#422" defStyleNum="dsNormal" />
+			<itemData name="Field" color="#422" defStyleNum="dsNormal" />
+			<itemData name="Const" color="#211" defStyleNum="dsNormal" />
 			<itemData name="Generics" color="#362" bold="true" defStyleNum="dsNormal" />
 			<itemData name="Reference" color="#33e" bold="true" defStyleNum="dsNormal" />
 			<itemData name="Asterisk" color="#33e" bold="true" defStyleNum="dsNormal" />
