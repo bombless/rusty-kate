@@ -46,7 +46,7 @@
 				<!-- pop(struct-field-type) pop(struct-field) pop(struct) -->
 				<DetectChar attribute="Braces" context="#pop#pop#pop" char="}" />
 				<!-- pop(struct-field-type) pop(struct-field) -->
-				<DetectChar attribute="Comma" context="#pop#pop" char="," lookAhead="true" />
+				<DetectChar lookAhead="true" context="#pop#pop" char="," />
 			</context>
 			<context attribute="Nothing" lineEndContext="#stay" name="alias">
 				<DetectSpaces attribute="Spaces" context="#stay" />
@@ -100,7 +100,7 @@
 				<DetectSpaces attribute="Spaces" context="#stay" />
 				<IncludeRules context="comment" />
 				<StringDetect attribute="Keyword" context="#stay" String="super" />
-				<RegExpr attribute="Nothing" context="use" String="::|\w" lookAhead="true" />
+				<RegExpr lookAhead="true" context="use" String="::|\w" />
 			</context>
 			<context attribute="Nothing" lineEndContext="#stay" name="use">
 				<DetectSpaces attribute="Spaces" context="#stay" />
@@ -108,7 +108,7 @@
 				<Detect2Chars attribute="Namespace" context="#stay" char=":" char1=":" />
 				<RegExpr attribute="Namespace" context="use-element"
 					String="(::\s*)?\w+\s*::|(::\s*)?\w+\s*::(\s*\w+\s*::)+" />
-				<RegExpr attribute="Nothing" context="use" String=".*[{;]" lookAhead="true" />
+				<RegExpr lookAhead="true" context="use" String=".*[{;]" />
 			</context>
 			<context attribute="Nothing" lineEndContext="#stay" name="use-element">
 				<DetectSpaces attribute="Spaces" context="#stay" />
@@ -173,7 +173,7 @@
 			</context>
 			<context attribute="Nothing" lineEndContext="#stay" name="return_type">
 				<IncludeRules context="type" />
-				<DetectChar attribute="Signature" context="#pop" char=";" lookAhead="true" />
+				<DetectChar lookAhead="true" context="#pop" char=";" />
 			</context>
 			<context attribute="Nothing" lineEndContext="#stay" name="type">
 				<DetectSpaces attribute="Spaces" context="#stay" />
@@ -217,7 +217,7 @@
 				<DetectChar attribute="Signature" context="#stay" char="+" />
 				<DetectChar attribute="Signature" context="#pop" char="," />
 				<!-- pop(bound) pop(bound-start) -->
-				<DetectChar attribute="Generics" context="#pop#pop" char="&gt;" lookAhead="true" />
+				<DetectChar lookAhead="true" context="#pop#pop" char="&gt;" />
 				<DetectChar attribute="Generics" context="bound-as-generics-parameter" char="&lt;" />
 			</context>
 			<context attribute="Nothing" lineEndContext="#stay" name="bound-as-generics-parameter">
@@ -244,7 +244,7 @@
 				<!-- pop(type-in-arguments) pop(argument-type-start) -->
 				<DetectChar attribute="Signature" context="#pop#pop" char="," />
 				<!-- pop(type-in-arguments) pop(argument-type-start) -->
-				<DetectChar attribute="Signature" context="#pop#pop" char=")" lookAhead="true" />
+				<DetectChar lookAhead="true" context="#pop#pop" char=")" />
 			</context>
 			<context attribute="Nothing" lineEndContext="#stay" name="trait-name">
 				<DetectSpaces attribute="Spaces" context="#stay" />
