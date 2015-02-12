@@ -194,6 +194,8 @@
 				<DetectSpaces attribute="Spaces" context="#stay" />
 				<IncludeRules context="comment" />
 				<DetectChar attribute="Signature" context="#stay" char="(" />
+				<!-- pop(external-fn) pop(external-type) -->
+				<DetectChar attribute="Signature" context="#pop#pop" char=")" />
 				<DetectIdentifier attribute="Type" context="external-fn-arg-type" />
 				<StringDetect attribute="Keyword" context="external-fn-ret" String="-&gt;" />
 				<!-- pop(external-fn) pop(external-type) -->
