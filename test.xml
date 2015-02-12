@@ -196,6 +196,12 @@
 				<DetectChar attribute="Signature" context="#stay" char="(" />
 				<!-- pop(external-fn) pop(external-type) -->
 				<DetectChar attribute="Signature" context="#pop#pop" char=")" />
+				<!-- FIXME:
+					this rule is actually wrong, because Rust support argument without name in signature,
+					e.g. fn(c_void)
+					if I understand correctly this is kinda like LL(2),
+					which is beyound the ability of kate's syntax highlighting
+				-->
 				<DetectIdentifier attribute="Type" context="external-fn-arg-type" />
 				<StringDetect attribute="Keyword" context="external-fn-ret" String="-&gt;" />
 				<!-- pop(external-fn) pop(external-type) -->
