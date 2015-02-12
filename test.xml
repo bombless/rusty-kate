@@ -51,18 +51,18 @@
 			<context attribute="Nothing" lineEndContext="#stay" name="alias">
 				<DetectSpaces attribute="Spaces" context="#stay" />
 				<IncludeRules context="comment" />
-				<RegExpr attribute="Namespace" context="#stay"
-					String="(::\s*)?\w+\s*::(\s*\w+\s*::)*" />
 				<DetectIdentifier attribute="Type" context="#stay" />
 				<RegExpr attribute="Lifetime" context="#stay" String="'[_a-z]+" />
 				<DetectChar attribute="Type" context="#stay" char="+" />
 				<DetectChar attribute="Type" context="#stay" char="," />
-				<DetectChar attribute="Semicolon" context="#pop" char=";" />
-				<DetectChar attribute="Equal" context="#stay" char="=" />
+				<DetectChar attribute="Equal" context="alias-type" char="=" />
 				<DetectChar attribute="Generics" context="#stay" char="&lt;" />
 				<DetectChar attribute="Generics" context="#stay" char="&gt;" />
-				<DetectChar attribute="Type" context="#stay" char="(" />
-				<DetectChar attribute="Type" context="#stay" char=")" />
+			</context>
+			<context attribute="Nothing" lineEndContext="#stay" name="alias-type">
+				<IncludeRules context="type" />
+				<!-- pop(alias-type) pop(alias) -->
+				<DetectChar attribute="Semicolon" context="#pop#pop" char=";" />
 			</context>
 			<context attribute="Nothing" lineEndContext="#stay" name="const-start">
 				<DetectSpaces attribute="Spaces" context="#stay" />
