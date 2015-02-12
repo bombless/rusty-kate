@@ -64,9 +64,9 @@
 				<DetectChar attribute="Semicolon" context="#pop#pop#pop#pop#pop" char=";" />
 			</context>
 			<context attribute="Nothing" lineEndContext="#stay" name="literal">
-				<RegExpr attribute="Literal" context="#stay" String="\(\s*\)" />	
-				<RegExpr attribute="Literal" context="#stay" String="(0[xX])?[0-9]+" />
-				<RegExpr attribute="Literal" context="#stay" String="[0-9]+\.[0-9]+(f32|f64)?" />
+				<RegExpr attribute="Literal" context="#stay" String="\(\s*\)" />
+				<RegExpr attribute="Literal" context="#stay" String="(0[xX])?[0-9a-fA-F]+" />
+				<RegExpr attribute="Literal" context="#stay" String="[0-9]+\.[0-9]*(f32|f64)?" />
 			</context>
 			<context attribute="Nothing" lineEndContext="#stay" name="use-start">
 				<DetectSpaces attribute="Spaces" context="#stay" />
