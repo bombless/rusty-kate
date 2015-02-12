@@ -16,9 +16,37 @@
 				<StringDetect attribute="Keyword" context="use-start" String="use" />
 				<StringDetect attribute="Keyword" context="const-start" String="const" />
 				<StringDetect attribute="Keyword" context="alias" String="type" />
+				<StringDetect attribute="Keyword" context="struct" String="struct" />
 				<!-- pop(outside) pop(mod-start) pop(mod) -->
 				<DetectChar attribute="Braces" context="#pop#pop#pop" char="}" />
 				<DetectChar attribute="Directive" context="directive" char="#" />
+			</context>
+			<context attribute="Nothing" lineEndContext="#stay" name="struct">
+				<DetectSpaces attribute="Spaces" context="#stay" />
+				<IncludeRules context="comment" />
+				<DetectChar attribute="Semicolon" context="#pop" char=";" />
+				<DetectChar attribute="Braces" context="struct-field" char="{" />
+				<DetectChar attribute="Comma" context="struct-field" char="," />
+				<DetectIdentifier attribute="Type" context="#stay" />
+				<DetectChar attribute="Generics" context="generics-parameters" char="&lt;" />
+			</context>
+			<context attribute="Nothing" lineEndContext="#stay" name="struct-field">
+				<DetectSpaces attribute="Spaces" context="#stay" />
+				<IncludeRules context="comment" />
+				<StringDetect attribute="Keyword" context="#stay" String="pub" />
+				<DetectIdentifier attribute="Normal" context="#stay" />
+				<DetectChar attribute="Colon" context="struct-field-type" char=":" />
+				<!-- pop(struct-field) pop(struct) -->
+				<DetectChar attribute="Braces" context="#pop#pop" char="}" />
+			</context>
+			<context attribute="Nothing" lineEndContext="#stay" name="struct-field-type">
+				<DetectSpaces attribute="Spaces" context="#stay" />
+				<IncludeRules context="comment" />
+				<IncludeRules context="type" />
+				<!-- pop(struct-field-type) pop(struct-field) pop(struct) -->
+				<DetectChar attribute="Braces" context="#pop#pop#pop" char="}" />
+				<!-- pop(struct-field-type) pop(struct-field) -->
+				<DetectChar attribute="Comma" context="#pop#pop" char="," lookAhead="true" />
 			</context>
 			<context attribute="Nothing" lineEndContext="#stay" name="alias">
 				<DetectSpaces attribute="Spaces" context="#stay" />
@@ -140,7 +168,7 @@
 				<!-- pop(function-start) pop(function-signature-start) -->
 				<DetectChar attribute="Signature" context="#pop#pop" char=";" />
 				<StringDetect attribute="Signature" context="return_type" String="->" />
-				<DetectChar attribute="Generics" context="function-generics-parameters" char="&lt;" />
+				<DetectChar attribute="Generics" context="generics-parameters" char="&lt;" />
 				<DetectChar attribute="Signature" context="arguments" char="(" />
 			</context>
 			<context attribute="Nothing" lineEndContext="#stay" name="return_type">
@@ -164,7 +192,7 @@
 				<DetectChar attribute="Signature" context="#stay" char="," />
 				<DetectChar attribute="Generics" context="#pop" char="&gt;" />
 			</context>
-			<context attribute="Nothing" lineEndContext="#stay" name="function-generics-parameters">
+			<context attribute="Nothing" lineEndContext="#stay" name="generics-parameters">
 				<DetectSpaces attribute="Spaces" context="#stay" />
 				<IncludeRules context="comment" />
 				<DetectChar attribute="Generics" context="#pop" char="&gt;" />
@@ -175,7 +203,7 @@
 				<DetectSpaces attribute="Spaces" context="#stay" />
 				<IncludeRules context="comment" />
 				<DetectChar attribute="Signature" context="#pop" char="," />
-				<!-- pop(bound-start) pop(function-generics-parameters) -->
+				<!-- pop(bound-start) pop(generics-parameters) -->
 				<DetectChar attribute="Generics" context="#pop#pop" char="&gt;" />
 				<DetectChar attribute="Signature" context="bound" char=":" />
 			</context>
@@ -287,6 +315,8 @@
 			<itemData name="String" color="#666" defStyleNum="dsString" />	
 			<itemData name="Braces" color="#772" defStyleNum="dsRegionMarker" />
 			<itemData name="Semicolon" color="#700" bold="true" defStyleNum="dsNormal" />
+			<itemData name="Colon" color="#700" bold="true" defStyleNum="dsNormal" />
+			<itemData name="Comma" color="#700" bold="true" defStyleNum="dsNormal" />
 			<itemData name="Type" color="#282" bold="true" defStyleNum="dsDataType" />
 			<itemData name="Function" color="#153" defStyleNum="dsNormal" />
 			<itemData name="Namespace" color="#e59" defStyleNum="dsNormal" />
